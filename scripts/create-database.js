@@ -16,7 +16,7 @@ require('dotenv').config({
 
 // destructure environment variables from process.env 
 const { DB_PASSWORD, DB_NAME, DB_USER, DB_HOST, DB_PORT } = process.env;
-
+console.log(DB_NAME);
 // This asyncronous function will run before app
 const setUpDatabase = async () => {
     try {
@@ -31,12 +31,6 @@ const setUpDatabase = async () => {
 
         // create the database if it doesn't already exist
         await db.query(`CREATE DATABASE IF NOT EXISTS ${DB_NAME}`);
-        await db.query(`USE ${DB_NAME}`);
-        await db.query(`CREATE TABLE IF NOT EXISTS Artist (
-                        id INT PRIMARY KEY auto_increment,
-                        name VARCHAR(25),
-                        genre VARCHAR(25)
-                        )`);
         db.close();
 
     } catch (err) {
