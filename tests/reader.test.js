@@ -22,6 +22,7 @@ describe('/readers', () => {
                 const response = await request(app).post('/readers').send({
                     name: 'Emmett Brown',
                     email: 'outatime@aol.com',
+                    password: '123'
                 });
 
                 const readerRecord = await Reader.findByPk(response.body.id, {
@@ -31,6 +32,7 @@ describe('/readers', () => {
                 expect(response.body.name).to.equal('Emmett Brown');
                 expect(readerRecord.name).to.equal('Emmett Brown');
                 expect(readerRecord.email).to.equal('outatime@aol.com');
+                expect(readerRecord.password).to.equal('123');
 
                 expect(response.status).to.equal(201);
             });
@@ -80,6 +82,7 @@ describe('/readers', () => {
 
                     expect(reader.name).to.equal(expected.name);
                     expect(reader.email).to.equal(expected.email);
+                    expect(reader.password).to.equal(expected.password);
                 });
             });
         });
@@ -92,6 +95,7 @@ describe('/readers', () => {
                 expect(response.status).to.equal(200);
                 expect(response.body.name).to.equal(reader.name);
                 expect(response.body.email).to.equal(reader.email);
+                expect(response.body.password).to.equal(reader.password);
             });
 
             it('returns a 404 if the reader does not exist', async () => {
