@@ -20,21 +20,42 @@ describe('/readers', () => {
         describe('POST /readers', () => {
             it('creates a new reader in the database', async () => {
                 const response = await request(app).post('/readers').send({
-                    name: 'Emmett Brown',
-                    email: 'outatime@aol.com',
-                    password: '123'
+                    name: 'Dean Spooner',
+                    email: 'dean@dean.com',
+                    password: '12345678'
                 });
 
                 const readerRecord = await Reader.findByPk(response.body.id, {
                     raw: true,
                 });
 
-                expect(response.body.name).to.equal('Emmett Brown');
-                expect(readerRecord.name).to.equal('Emmett Brown');
-                expect(readerRecord.email).to.equal('outatime@aol.com');
-                expect(readerRecord.password).to.equal('123');
+                expect(response.body.name).to.equal('Dean Spooner');
+                expect(readerRecord.name).to.equal('Dean Spooner');
+                expect(readerRecord.email).to.equal('dean@dean.com');
+                expect(readerRecord.password).to.equal('12345678');
 
                 expect(response.status).to.equal(201);
+            });
+
+            it('returns a 400 error if field is null', async () => {
+                const response = await request(app).post('/readers').send({
+                    name: 'Emmett Brown',
+                    email: 'outatime@aol.com'
+                });
+
+                expect(response.status).to.equal(400);
+                expect(response.body.error).to.equal('Please ensure all fields are completed.');
+            });
+
+            it('returns a 422 error if password is not between 8 and 16', async () => {
+                const response = await request(app).post('/readers').send({
+                    name: 'Emmett Brown',
+                    email: 'outatime@aol.com',
+                    password: '123'
+                });
+
+                expect(response.status).to.equal(422);
+                expect(response.body.error).to.equal('Password must be between 8 and 16 characters in length.');
             });
         });
     });
@@ -68,6 +89,19 @@ describe('/readers', () => {
 
         afterEach(async () => {
             await Reader.destroy({ truncate: { cascade: true } });
+        });
+
+        describe('POST /readers', () => {
+            it('returns a 409 error if email has already been used', async () => {
+                const response = await request(app).post('/readers').send({
+                    name: 'Emmett Brown',
+                    email: 'outatime@aol.com',
+                    password: '12345678'
+                });
+
+                expect(response.status).to.equal(409);
+                expect(response.body.error).to.equal(`User with email outatime@aol.com already exists.`);
+            });
         });
 
         describe('GET /readers', () => {
