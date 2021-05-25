@@ -38,6 +38,17 @@ describe('/books', () => {
 
                 expect(response.status).to.equal(201);
             });
+
+            it('returns a 400 error if field is null', async () => {
+                const response = await request(app).post('/readers').send({
+                    title: 'Ellie Kemp - My Autobiography',
+                    author: 'Ellie Kemp',
+                    genre: 'Autobiography'
+                });
+
+                expect(response.status).to.equal(400);
+                expect(response.body.error).to.equal('Please ensure all fields are completed.');
+            });
         });
     });
 
@@ -73,6 +84,20 @@ describe('/books', () => {
 
         afterEach(async () => {
             await Book.destroy({ truncate: { cascade: true } });
+        });
+
+        describe('POST /books', () => {
+            it('returns a 409 error if a matching title and author already exists', async () => {
+                const response = await request(app).post('/books').send({
+                    title: 'Alice In Wonderland',
+                    author: 'Lewis Carroll',
+                    genre: 'Fantasy',
+                    ISBN: '041'
+                });
+
+                expect(response.status).to.equal(409);
+                expect(response.body.error).to.equal(`The book Alice In Wonderland by Lewis Carroll is already in this library.`);
+            });
         });
 
         describe('GET /books', () => {

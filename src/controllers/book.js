@@ -1,6 +1,24 @@
 const { Book } = require('../models');
 
 exports.create = async (req, res) => {
+    const checkTitle = req.body.title;
+    const checkAuthor = req.body.author;
+    const checkGenre = req.body.genre;
+    const checkISBN = req.body.ISBN;
+    if (checkTitle == null || checkAuthor == null || checkGenre == null || checkISBN == null) {
+        return res.status(400).send({ error: `Please ensure all fields are completed.` });
+    }
+
+    const checkExisting = await Book.findAll({
+        where: {
+            title: req.body.title,
+            author: req.body.author
+        },
+    });
+    if (checkExisting[0]) {
+        return res.status(409).send({ error: `The book ${req.body.title} by ${req.body.author} is already in this library.` });
+    }
+
     const newBook = await Book.create(req.body);
     res.status(201).json(newBook);
 };
