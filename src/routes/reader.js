@@ -12,6 +12,6 @@ router.get('/:id', readerController.findById);
 
 router.patch('/:id', readerController.update);
 
-router.delete('/:id', readerController.delete);
+router.delete('/:id', readerController.remove);
 
 module.exports = router;

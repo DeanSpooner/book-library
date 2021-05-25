@@ -1,7 +1,7 @@
 const { Book } = require('../models');
 const helper = require('./helper');
 
-exports.create = async (req, res) => {
+const create = async (req, res) => {
     const checkTitle = req.body.title;
     const checkAuthor = req.body.author;
     const checkGenre = req.body.genre;
@@ -23,15 +23,15 @@ exports.create = async (req, res) => {
     helper.create('book', req, res);
 };
 
-exports.findAll = async (req, res) => {
+const findAll = async (req, res) => {
     helper.findAll('book', req, res);
 };
 
-exports.findById = async (req, res) => {
+const findById = async (req, res) => {
     helper.findById('book', req, res);
 }
 
-exports.findByTitle = async (req, res) => {
+const findByTitle = async (req, res) => {
     const thisBook = await Book.findAll({
         where: {
             title: req.body.title
@@ -43,7 +43,7 @@ exports.findByTitle = async (req, res) => {
     res.status(200).json(thisBook);
 }
 
-exports.findByAuthor = async (req, res) => {
+const findByAuthor = async (req, res) => {
     const books = await Book.findAll({
         where: {
             author: req.body.author
@@ -55,7 +55,7 @@ exports.findByAuthor = async (req, res) => {
     res.status(200).json(books);
 }
 
-exports.findByGenre = async (req, res) => {
+const findByGenre = async (req, res) => {
     const books = await Book.findAll({
         where: {
             genre: req.body.genre
@@ -67,7 +67,7 @@ exports.findByGenre = async (req, res) => {
     res.status(200).json(books);
 }
 
-exports.findByISBN = async (req, res) => {
+const findByISBN = async (req, res) => {
     const books = await Book.findAll({
         where: {
             ISBN: req.body.ISBN
@@ -79,10 +79,12 @@ exports.findByISBN = async (req, res) => {
     res.status(200).json(books);
 }
 
-exports.update = async (req, res) => {
+const update = async (req, res) => {
     helper.update('book', req, res);
 }
 
-exports.delete = async (req, res) => {
+const remove = async (req, res) => {
     helper.remove('book', req, res);
 }
+
+module.exports = { create, findAll, findById, findByTitle, findByAuthor, findByGenre, findByISBN, update, remove };

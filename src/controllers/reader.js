@@ -1,7 +1,7 @@
 const { Reader } = require('../models');
 const helper = require('./helper');
 
-exports.create = async (req, res) => {
+const create = async (req, res) => {
     const checkPassword = req.body.password;
     const checkEmail = req.body.email;
     const checkName = req.body.name;
@@ -25,18 +25,20 @@ exports.create = async (req, res) => {
     helper.create('reader', req, res);
 };
 
-exports.findAll = async (req, res) => {
+const findAll = async (req, res) => {
     helper.findAll('reader', req, res);
 };
 
-exports.findById = async (req, res) => {
+const findById = async (req, res) => {
     helper.findById('reader', req, res);
 }
 
-exports.update = async (req, res) => {
+const update = async (req, res) => {
     helper.update('reader', req, res);
 }
 
-exports.delete = async (req, res) => {
+const remove = async (req, res) => {
     helper.remove('reader', req, res);
 }
+
+module.exports = { create, findAll, findById, update, remove };

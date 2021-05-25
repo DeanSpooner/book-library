@@ -20,6 +20,6 @@ router.post('/isbn', bookController.findByISBN);
 
 router.patch('/:id', bookController.update);
 
-router.delete('/:id', bookController.delete);
+router.delete('/:id', bookController.remove);
 
 module.exports = router;
