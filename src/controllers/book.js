@@ -1,4 +1,5 @@
 const { Book } = require('../models');
+const helper = require('./helper');
 
 exports.create = async (req, res) => {
     const checkTitle = req.body.title;
@@ -19,21 +20,15 @@ exports.create = async (req, res) => {
         return res.status(409).send({ error: `The book ${req.body.title} by ${req.body.author} is already in this library.` });
     }
 
-    const newBook = await Book.create(req.body);
-    res.status(201).json(newBook);
+    helper.create('book', req, res);
 };
 
 exports.findAll = async (req, res) => {
-    const books = await Book.findAll();
-    res.status(200).json(books);
+    helper.findAll('book', req, res);
 };
 
 exports.findById = async (req, res) => {
-    const thisBook = await Book.findByPk(req.params.id);
-    if (!thisBook) {
-        return res.status(404).send({ error: 'The book could not be found.' });
-    }
-    res.status(200).json(thisBook);
+    helper.findById('book', req, res);
 }
 
 exports.findByTitle = async (req, res) => {
@@ -85,27 +80,9 @@ exports.findByISBN = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
-    let thisBook = await Book.findByPk(req.params.id);
-
-    if (!thisBook)
-        return res.status(404).send({ error: 'The book could not be found.' });
-
-    await Book.update(req.body, {
-        where: { id: req.params.id },
-    });
-
-    thisBook = await Book.findByPk(req.params.id);
-    res.status(200).json(thisBook);
+    helper.update('book', req, res);
 }
 
 exports.delete = async (req, res) => {
-    const thisBook = await Book.findByPk(req.params.id);
-    if (!thisBook) {
-        return res.status(404).send({ error: 'The book could not be found.' });
-    }
-
-    await Book.destroy({
-        where: { id: req.params.id }
-    });
-    res.status(204).json(thisBook);
+    helper.remove('book', req, res);
 }
