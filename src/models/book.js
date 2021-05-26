@@ -7,34 +7,23 @@ module.exports = (connection, DataTypes) => {
                 notEmpty: {
                     args: true,
                     msg: 'Please include a book title.'
-                }
-            }
-        },
-        author: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: {
+                },
+                notNull: {
                     args: true,
-                    msg: 'Please include an author.'
-                }
-            }
-        },
-        genre: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: {
-                    args: true,
-                    msg: 'Please include a genre.'
+                    msg: 'Please include a book title.'
                 }
             }
         },
         ISBN: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: 'uniqueTag',
             validate: {
                 notEmpty: {
+                    args: true,
+                    msg: 'Please include an ISBN.'
+                },
+                notNull: {
                     args: true,
                     msg: 'Please include an ISBN.'
                 }

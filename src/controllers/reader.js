@@ -31,14 +31,18 @@ const findAll = async (req, res) => {
 
 const findById = async (req, res) => {
     helper.findById('reader', req, res);
+};
+
+const findAllBooks = async (req, res) => {
+    helper.findAllBooks('reader', req, res);
 }
 
 const update = async (req, res) => {
     helper.update('reader', req, res);
-}
+};
 
 const remove = async (req, res) => {
     helper.remove('reader', req, res);
-}
+};
 
-module.exports = { create, findAll, findById, update, remove };
+module.exports = { create, findAll, findById, findAllBooks, update, remove };

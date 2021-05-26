@@ -7,19 +7,27 @@ module.exports = (connection, DataTypes) => {
                 notEmpty: {
                     args: true,
                     msg: 'Please enter a valid name.'
+                },
+                notNull: {
+                    args: true,
+                    msg: 'Please enter a valid name.'
                 }
             }
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
+            unique: 'uniqueTag',
             validate: {
                 isEmail: {
                     args: true,
                     msg: 'Please enter a valid email address.'
                 },
                 notEmpty: {
+                    args: true,
+                    msg: 'Please enter a valid email address.'
+                },
+                notNull: {
                     args: true,
                     msg: 'Please enter a valid email address.'
                 }
@@ -34,6 +42,10 @@ module.exports = (connection, DataTypes) => {
                     msg: 'Password must be between 8 and 16 characters in length.'
                 },
                 notEmpty: {
+                    args: true,
+                    msg: 'Please enter a valid password.'
+                },
+                notNull: {
                     args: true,
                     msg: 'Please enter a valid password.'
                 }

@@ -3,21 +3,19 @@ const helper = require('./helper');
 
 const create = async (req, res) => {
     const checkTitle = req.body.title;
-    const checkAuthor = req.body.author;
-    const checkGenre = req.body.genre;
     const checkISBN = req.body.ISBN;
-    if (checkTitle == null || checkAuthor == null || checkGenre == null || checkISBN == null) {
+    if (checkTitle == null || checkISBN == null || checkTitle == "" || checkISBN == "") {
         return res.status(400).send({ error: `Please ensure all fields are completed.` });
     }
 
     const checkExisting = await Book.findAll({
         where: {
             title: req.body.title,
-            author: req.body.author
+            ISBN: req.body.ISBN
         },
     });
     if (checkExisting[0]) {
-        return res.status(409).send({ error: `The book ${req.body.title} by ${req.body.author} is already in this library.` });
+        return res.status(409).send({ error: `The book ${req.body.title} is already in this library.` });
     }
 
     helper.create('book', req, res);

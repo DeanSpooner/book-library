@@ -35,7 +35,7 @@ describe('/authors', () => {
 
             it('returns a 400 error if field is null', async () => {
                 const response = await request(app).post('/authors').send({
-                    author: null
+                    author: ""
                 });
 
                 expect(response.status).to.equal(400);

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', genreController.create);
 
-router.get('/', genreController.findAll);
+router.get('/', genreController.findAllBooks);
 
 router.get('/:id', genreController.findById);
 

@@ -19,12 +19,12 @@ const create = async (req, res) => {
     helper.create('genre', req, res);
 };
 
-const findAll = async (req, res) => {
-    helper.findAll('genre', req, res);
-};
-
 const findById = async (req, res) => {
     helper.findById('genre', req, res);
+}
+
+const findAllBooks = async (req, res) => {
+    helper.findAllBooks('genre', req, res);
 }
 
 const update = async (req, res) => {
@@ -35,4 +35,4 @@ const remove = async (req, res) => {
     helper.remove('genre', req, res);
 }
 
-module.exports = { create, findAll, findById, update, remove };
+module.exports = { create, findById, findAllBooks, update, remove };

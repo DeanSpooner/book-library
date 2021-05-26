@@ -3,7 +3,7 @@ const helper = require('./helper');
 
 const create = async (req, res) => {
     const checkAuthor = req.body.author;
-    if (checkAuthor == null) {
+    if (checkAuthor == null || checkAuthor == "") {
         return res.status(400).send({ error: `Please ensure all fields are completed.` });
     }
 
@@ -27,6 +27,10 @@ const findById = async (req, res) => {
     helper.findById('author', req, res);
 }
 
+const findAllBooks = async (req, res) => {
+    helper.findAllBooks('reader', req, res);
+}
+
 const update = async (req, res) => {
     helper.update('author', req, res);
 }
@@ -35,4 +39,4 @@ const remove = async (req, res) => {
     helper.remove('author', req, res);
 }
 
-module.exports = { create, findAll, findById, update, remove };
+module.exports = { create, findAll, findById, findAllBooks, update, remove };

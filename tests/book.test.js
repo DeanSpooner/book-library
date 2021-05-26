@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../src/app');
-const { Book } = require('../src/models');
+const { Book, Genre } = require('../src/models');
 
 describe('/books', () => {
     let books;
@@ -21,8 +21,6 @@ describe('/books', () => {
             it('creates a new book in the database', async () => {
                 const response = await request(app).post('/books').send({
                     title: 'In The Miso Soup',
-                    author: 'Ryu Murakami',
-                    genre: 'Horror',
                     ISBN: '123'
                 });
 
@@ -32,8 +30,6 @@ describe('/books', () => {
 
                 expect(response.body.title).to.equal('In The Miso Soup');
                 expect(bookRecord.title).to.equal('In The Miso Soup');
-                expect(bookRecord.author).to.equal('Ryu Murakami');
-                expect(bookRecord.genre).to.equal('Horror');
                 expect(bookRecord.ISBN).to.equal('123');
 
                 expect(response.status).to.equal(201);
@@ -41,9 +37,7 @@ describe('/books', () => {
 
             it('returns a 400 error if field is null', async () => {
                 const response = await request(app).post('/readers').send({
-                    title: 'Ellie Kemp - My Autobiography',
-                    author: 'Ellie Kemp',
-                    genre: 'Autobiography'
+                    title: 'Ellie Kemp - My Autobiography'
                 });
 
                 expect(response.status).to.equal(400);
@@ -61,20 +55,14 @@ describe('/books', () => {
             await Promise.all([
                 Book.create({
                     title: 'In The Miso Soup',
-                    author: 'Ryu Murakami',
-                    genre: 'Horror',
                     ISBN: '123'
                 }),
                 Book.create({
                     title: '1969',
-                    author: 'Ryu Murakami',
-                    genre: 'Roman A Clef',
                     ISBN: '456'
                 }),
                 Book.create({
                     title: 'Alice In Wonderland',
-                    author: 'Lewis Carroll',
-                    genre: 'Fantasy',
                     ISBN: '041'
                 }),
             ]);
@@ -90,13 +78,11 @@ describe('/books', () => {
             it('returns a 409 error if a matching title and author already exists', async () => {
                 const response = await request(app).post('/books').send({
                     title: 'Alice In Wonderland',
-                    author: 'Lewis Carroll',
-                    genre: 'Fantasy',
                     ISBN: '041'
                 });
 
                 expect(response.status).to.equal(409);
-                expect(response.body.error).to.equal(`The book Alice In Wonderland by Lewis Carroll is already in this library.`);
+                expect(response.body.error).to.equal(`The book Alice In Wonderland is already in this library.`);
             });
         });
 
@@ -111,8 +97,6 @@ describe('/books', () => {
                     const expected = books.find((a) => a.id === book.id);
 
                     expect(book.title).to.equal(expected.title);
-                    expect(book.author).to.equal(expected.author);
-                    expect(book.genre).to.equal(expected.genre);
                     expect(book.ISBN).to.equal(expected.ISBN);
                 });
             });
@@ -125,10 +109,7 @@ describe('/books', () => {
 
                 expect(response.status).to.equal(200);
                 expect(response.body.title).to.equal(book.title);
-                expect(response.body.author).to.equal(book.author);
-                expect(response.body.genre).to.equal(book.genre);
                 expect(response.body.ISBN).to.equal(book.ISBN);
-
             });
 
             it('returns a 404 if the book does not exist', async () => {
@@ -140,26 +121,26 @@ describe('/books', () => {
         });
 
         describe('PATCH /books/:id', () => {
-            it('updates books author by id', async () => {
+            it('updates books ISBN by id', async () => {
                 const book = books.filter(
                     (n) => n.dataValues.title === 'In The Miso Soup'
                 )[0].dataValues;
 
                 const response = await request(app)
                     .patch(`/books/${book.id}`)
-                    .send({ author: 'R Murakami' });
+                    .send({ ISBN: '44444444' });
                 const updatedBookRecord = await Book.findByPk(book.id, {
                     raw: true,
                 });
 
                 expect(response.status).to.equal(200);
-                expect(updatedBookRecord.author).to.equal('R Murakami');
+                expect(updatedBookRecord.ISBN).to.equal('44444444');
             });
 
             it('returns a 404 if the book does not exist', async () => {
                 const response = await request(app)
                     .patch('/books/2015')
-                    .send({ author: 'JRR Tolkien' });
+                    .send({ ISBN: '99999' });
 
                 expect(response.status).to.equal(404);
                 expect(response.body.error).to.equal('The book could not be found.');

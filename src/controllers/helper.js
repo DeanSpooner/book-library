@@ -37,7 +37,43 @@ const findAll = async (model, req, res) => {
 }
 
 const findById = async (model, req, res) => {
-    const thisItem = await getModel(model).findByPk(req.params.id);
+    let thisItem;
+    if (model == 'book') {
+        thisItem = await getModel(model).findByPk(req.params.id, {
+            include: [
+                {
+                    model: Reader,
+                },
+                {
+                    model: Author,
+                },
+                {
+                    model: Genre,
+                },
+            ]
+        });
+    }
+    else if (model == 'reader') {
+        thisItem = await getModel(model).findByPk(req.params.id, {
+            include: [
+                {
+                    model: Book,
+                }
+            ]
+        });
+    }
+    else if (model == 'author') {
+        thisItem = await getModel(model).findByPk(req.params.id, {
+            include: [
+                {
+                    model: Book,
+                }
+            ]
+        });
+    }
+    else {
+        thisItem = await getModel(model).findByPk(req.params.id);
+    }
     if (!thisItem && model == 'reader') {
         return res.status(404).send(readerError);
     }
@@ -52,6 +88,20 @@ const findById = async (model, req, res) => {
     }
     res.status(200).send(removePassword(thisItem.dataValues));
 }
+
+const findAllBooks = async (model, req, res) => {
+    const thisItem = await getModel(model).findAll({
+        include: [
+            {
+                model: Book,
+            }
+        ]
+    });
+    if (!thisItem) {
+        return res.status(404).send(genreError);
+    }
+    res.status(200).send(thisItem);
+};
 
 const update = async (model, req, res) => {
     let thisItem = await getModel(model).findByPk(req.params.id);
@@ -95,4 +145,4 @@ const remove = async (model, req, res) => {
     res.status(204).json(removePassword(thisItem.dataValues));
 };
 
-module.exports = { create, findAll, findById, update, remove };
+module.exports = { create, findAll, findById, findAllBooks, update, remove };
