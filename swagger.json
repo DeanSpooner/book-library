@@ -9,6 +9,7 @@
         "url": "https://opensource.org/licenses/MIT"
       }
     },
+    "host": "deans-book-library.herokuapp.com",
     "basePath": "/",
     "consumes": [
       "application/json"
@@ -17,7 +18,6 @@
       "application/json"
     ],
     "schemes": [
-      "http",
       "https"
     ],
     "tags": [{
