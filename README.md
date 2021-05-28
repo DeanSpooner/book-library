@@ -196,8 +196,8 @@ PORT=5000
     "ISBN": "05406821",
     "createdAt": "2021-05-08T21:01:24.000Z",
     "updatedAt": "2021-05-08T21:01:24.000Z",
-    "ReaderId": 2
-    "GenreId": 2
+    "ReaderId": 2,
+    "GenreId": 2,
     "AuthorId": 1
   },
   {
@@ -206,8 +206,8 @@ PORT=5000
     "ISBN": "81828384",
     "createdAt": "2021-05-08T21:01:24.000Z",
     "updatedAt": "2021-05-08T21:01:24.000Z",
-    "ReaderId": null
-    "GenreId": 1
+    "ReaderId": null,
+    "GenreId": 1,
     "AuthorId": 2
   },
   {
@@ -216,8 +216,8 @@ PORT=5000
     "ISBN": "90807060",
     "createdAt": "2021-05-08T21:01:24.000Z",
     "updatedAt": "2021-05-08T21:01:24.000Z",
-    "ReaderId": 3
-    "GenreId": 3
+    "ReaderId": 3,
+    "GenreId": 3,
     "AuthorId": 3
   }
 ]
@@ -245,13 +245,13 @@ PORT=5000
 ```json
 {
   "id": 4,
-    "title": "China",
-    "ISBN": "10203040",
-    "createdAt": "2021-05-08T21:02:24.000Z",
-    "updatedAt": "2021-05-08T21:02:24.000Z",
-    "ReaderId": null
-    "GenreId": 3
-    "AuthorId": 3
+  "title": "China",
+  "ISBN": "10203040",
+  "createdAt": "2021-05-08T21:02:24.000Z",
+  "updatedAt": "2021-05-08T21:02:24.000Z",
+  "ReaderId": null,
+  "GenreId": 3,
+  "AuthorId": 3
 }
 ```
 
@@ -265,15 +265,15 @@ PORT=5000
 
 ```json
 {
-    "id": 3,
-    "title": "Australia",
-    "ISBN": "90807060",
-    "createdAt": "2021-05-08T21:01:24.000Z",
-    "updatedAt": "2021-05-08T21:01:24.000Z",
-    "ReaderId": 3
-    "GenreId": 3
-    "AuthorId": 3
-    "Reader": {
+  "id": 3,
+  "title": "Australia",
+  "ISBN": "90807060",
+  "createdAt": "2021-05-08T21:01:24.000Z",
+  "updatedAt": "2021-05-08T21:01:24.000Z",
+  "ReaderId": 3,
+  "GenreId": 3,
+  "AuthorId": 3,
+  "Reader": {
     "id": 3,
     "name": "Matt",
     "email": "matt@matt.com",
@@ -314,35 +314,35 @@ PORT=5000
 
 ```json
 {
+  "id": 3,
+  "title": "New Zealand",
+  "ISBN": "90807060",
+  "createdAt": "2021-05-08T21:01:24.000Z",
+  "updatedAt": "2021-05-08T21:01:24.000Z",
+  "ReaderId": 3,
+  "GenreId": 3,
+  "AuthorId": 3,
+  "Reader": {
     "id": 3,
-    "title": "New Zealand",
-    "ISBN": "90807060",
-    "createdAt": "2021-05-08T21:01:24.000Z",
-    "updatedAt": "2021-05-08T21:01:24.000Z",
-    "ReaderId": 3
-    "GenreId": 3
-    "AuthorId": 3
-    "Reader": {
-      "id": 3,
-      "name": "Matt",
-      "email": "matt@matt.com",
-      "password": "password1234",
-      "createdAt": "2021-05-27T17:06:52.000Z",
-      "updatedAt": "2021-05-27T17:06:52.000Z"
-    },
-    "Author": {
-      "id": 3,
-      "author": "Lonely Planet",
-      "createdAt": "2021-05-27T17:08:26.000Z",
-      "updatedAt": "2021-05-27T17:08:26.000Z"
-    },
-    "Genre": {
-      "id": 3,
-      "genre": "Travel",
-      "createdAt": "2021-05-27T17:08:59.000Z",
-      "updatedAt": "2021-05-27T17:08:59.000Z"
-    }
+    "name": "Matt",
+    "email": "matt@matt.com",
+    "password": "password1234",
+    "createdAt": "2021-05-27T17:06:52.000Z",
+    "updatedAt": "2021-05-27T17:06:52.000Z"
+  },
+  "Author": {
+    "id": 3,
+    "author": "Lonely Planet",
+    "createdAt": "2021-05-27T17:08:26.000Z",
+    "updatedAt": "2021-05-27T17:08:26.000Z"
+  },
+  "Genre": {
+    "id": 3,
+    "genre": "Travel",
+    "createdAt": "2021-05-27T17:08:59.000Z",
+    "updatedAt": "2021-05-27T17:08:59.000Z"
   }
+}
 ```
 
 ---
@@ -471,8 +471,8 @@ PORT=5000
       "ISBN": "81828384",
       "createdAt": "2021-05-08T21:01:24.000Z",
       "updatedAt": "2021-05-08T21:01:24.000Z",
-      "ReaderId": null
-      "GenreId": 1
+      "ReaderId": null,
+      "GenreId": 1,
       "AuthorId": 2
     }
   ]
