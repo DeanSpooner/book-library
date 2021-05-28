@@ -53,7 +53,7 @@ const findById = async (model, req, res) => {
             ]
         });
     }
-    else if (model == 'reader') {
+    else if (model == 'reader' || model == 'author' || model == 'genre') {
         thisItem = await getModel(model).findByPk(req.params.id, {
             include: [
                 {
@@ -61,18 +61,6 @@ const findById = async (model, req, res) => {
                 }
             ]
         });
-    }
-    else if (model == 'author') {
-        thisItem = await getModel(model).findByPk(req.params.id, {
-            include: [
-                {
-                    model: Book,
-                }
-            ]
-        });
-    }
-    else {
-        thisItem = await getModel(model).findByPk(req.params.id);
     }
     if (!thisItem && model == 'reader') {
         return res.status(404).send(readerError);

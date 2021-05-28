@@ -1,0 +1,111 @@
+{
+  "swagger":"2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Dean's Book Library",
+    "description": "A web app for creating, reading, updating or deleting readers, books, authors and genres from a library database.",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "https://deans-book-library.herokuapp.com",
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "Readers",
+      "description": "Endpoints for interacting with readers"
+    }
+  ],
+
+
+
+
+
+  "paths": {
+    "/readers": {
+    "post": {
+      "tags": [
+        "Readers"
+    ],
+      "summary": "Creates a new reader in the database",
+      "parameters": [
+        {
+          "name": "PostReaderRequest",
+          "in": "body",
+          "description": "Post a reader to the database",
+          "schema": {
+            "type": "object",
+            "required": [
+              "name",
+              "email",
+              "password"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+          }
+      }
+      ],
+      "responses": {
+        "201": {
+          "description": "Reader successfully created",
+          "schema": {
+            "type": "object",
+            "$ref": "#/definitions/ReaderObject"
+          }
+      },
+      "produces": [
+        "application/json"
+      ]
+    }
+  }
+}
+},
+"definitions": {
+  "ReaderObject": {
+    "required": [
+      "id",
+      "name",
+      "email",
+      "createdAt",
+      "updatedAt"
+    ],
+    "properties": {
+      "id":{
+        "type": "integer"
+      },
+      "name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string"
+      },
+      "createdAt": {
+        "type": "string"
+      },
+      "updatedAt": {
+        "type": "string"
+      }
+    }
+  }
+}
+}

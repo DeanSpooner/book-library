@@ -1,5 +1,9 @@
 const express = require('express');
 
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerDoc = require('../swagger.json');
+
 const app = express();
 
 const readerRouter = require('./routes/reader');
@@ -19,5 +23,7 @@ app.use('/books', bookRouter);
 app.use('/authors', authorRouter);
 
 app.use('/genres', genreRouter);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 module.exports = app;

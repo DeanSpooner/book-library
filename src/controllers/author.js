@@ -28,7 +28,7 @@ const findById = async (req, res) => {
 }
 
 const findAllBooks = async (req, res) => {
-    helper.findAllBooks('reader', req, res);
+    helper.findAllBooks('author', req, res);
 }
 
 const update = async (req, res) => {

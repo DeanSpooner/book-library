@@ -1,0 +1,930 @@
+{
+    "swagger":"2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Dean's Book Library",
+      "description": "A web app for keeping a record of readers, books, authors and genres in an online library system.",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "basePath": "/",
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "schemes": [
+      "http",
+      "https"
+    ],
+    "tags": [{
+        "name": "Readers",
+        "description": "Endpoint for interacting with library readers"
+    },
+    {
+        "name": "Books",
+        "description": "Endpoint for interacting with books"
+    },
+    {
+        "name": "Authors",
+        "description": "Endpoint for interacting with authors"
+    },
+    {
+        "name": "Genres",
+        "description": "Endpoint for interacting with genres"
+    }],
+    "paths": {
+        "/readers": {
+            "post": {
+              "tags": [
+                  "Readers"
+              ],
+              "summary": "Creates a new reader in the database",
+              "parameters": [
+                {
+                  "name": "PostReaderRequest",
+                  "in": "body",
+                  "description": "Post a reader to the database",
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "email",
+                      "password"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string"
+                      }
+                      }
+                    }
+                  }
+              ],
+              "responses": {
+                "201": {
+                  "description": "Reader successfully created",
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/definitions/ReaderObject"
+                  }
+                },
+                "400": {
+                  "description": "Not all required fields have been included",
+                  "schema": {
+                    "type": "string",
+                    "$ref": "#/definitions/400Error"
+                  }
+                },
+                "409": {
+                  "description": "Email already used by another reader",
+                  "schema": {
+                    "type": "string",
+                    "$ref": "#/definitions/EmailError"
+                  }
+                },
+                "422": {
+                  "description": "Password not an acceptable length",
+                  "schema": {
+                    "type": "string",
+                    "$ref": "#/definitions/PasswordError"
+                  }
+                }
+              },
+              "produces": [
+                "application/json"
+              ]
+            },
+            "get": {
+                "tags": [
+                    "Readers"
+                ],
+                "summary": "Reads all the readers in the database",
+                "parameters": [],
+                "responses": {
+                  "200": {
+                    "description": "Returns an array of readers from the database",
+                    "schema": {
+                      "$ref": "#/definitions/ReaderArray"
+                    }
+                  }
+                },
+                "produces": [
+                  "application/json"
+                ]
+              }
+    },
+    "/readers/{ReaderId}": {
+      "get": {
+          "summary": "Read a single reader from the database, and any books they are borrowing (if any)",
+        "tags": [
+          "Readers"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "type": "number",
+            "name": "ReaderId",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the requested reader from the database",
+            "schema": {
+              "$ref": "#/definitions/ReaderObject"
+            }
+          },
+          "404": {
+            "description": "This item does not exist",
+            "schema": {
+              "type": "string",
+              "$ref": "#/definitions/404Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a single reader's name, email or password",
+      "tags": [
+        "Readers"
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "type": "number",
+          "name": "ReaderId",
+          "required": true
+        },
+        {
+          "in": "body",
+          "type": "object",
+          "name": "JsonPatch",
+          "required": true
+        }
+      ],
+      "responses": {
+        "201": {
+          "description": "Returns the requested reader from the database with updated info",
+          "schema": {
+            "$ref": "#/definitions/ReaderObject"
+          }
+        },
+        "404": {
+          "description": "This item does not exist",
+          "schema": {
+            "type": "string",
+            "$ref": "#/definitions/404Error"
+          }
+        }
+      }
+    },
+    "delete": {
+      "summary": "Delete a single reader from the database",
+    "tags": [
+      "Readers"
+    ],
+    "parameters": [
+      {
+        "in": "path",
+        "type": "number",
+        "name": "ReaderId",
+        "required": true
+      }
+    ],
+    "responses": {
+      "204": {
+        "description": "Deletes the requested reader from the database",
+        "schema": {
+          "$ref": "#/definitions/Deleted"
+        }
+      },
+      "404": {
+        "description": "This item does not exist",
+        "schema": {
+          "type": "string",
+          "$ref": "#/definitions/404Error"
+        }
+      }
+    }
+  }
+  },
+  "/books": {
+    "post": {
+      "tags": [
+          "Books"
+      ],
+      "summary": "Creates a new book in the database",
+      "parameters": [
+        {
+          "name": "PostBookRequest",
+          "in": "body",
+          "description": "Post a book to the database",
+          "schema": {
+            "type": "object",
+            "required": [
+              "title",
+              "ISBN"
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "ISBN": {
+                "type": "string"
+              },
+              "AuthorId": {
+                "type": "integer"
+              },
+              "GenreId": {
+                "type": "integer"
+              },
+              "ReaderId": {
+                "type": "integer"
+              }
+              }
+            }
+          }
+      ],
+      "responses": {
+        "201": {
+          "description": "Book successfully created",
+          "schema": {
+            "type": "object",
+            "$ref": "#/definitions/BookObject"
+          }
+        },
+        "400": {
+          "description": "Not all required fields have been included",
+          "schema": {
+            "type": "string",
+            "$ref": "#/definitions/400Error"
+          }
+        },
+        "409": {
+          "description": "Book with matching title and ISBN already in database",
+          "schema": {
+            "type": "string",
+            "$ref": "#/definitions/BookError"
+          }
+        }
+      },
+      "produces": [
+        "application/json"
+      ]
+    },
+    "get": {
+        "tags": [
+            "Books"
+        ],
+        "summary": "Reads all the books in the database",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns an array of books from the database",
+            "schema": {
+              "$ref": "#/definitions/BookArray"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ]
+      }
+},
+"/books/{BookId}": {
+  "get": {
+      "summary": "Read a single book from the database, and its associated author, genre and reader (if they have been assigned)",
+    "tags": [
+      "Books"
+    ],
+    "parameters": [
+      {
+        "in": "path",
+        "type": "number",
+        "name": "BookId",
+        "required": true
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Returns the requested book from the database",
+        "schema": {
+          "$ref": "#/definitions/BookObject"
+        }
+      },
+      "404": {
+        "description": "This item does not exist",
+        "schema": {
+          "type": "string",
+          "$ref": "#/definitions/404Error"
+        }
+      }
+    }
+  },
+  "patch": {
+    "summary": "Update a single book's title, ISBN, associated AuthorId, GenreId or ReaderId",
+  "tags": [
+    "Books"
+  ],
+  "parameters": [
+    {
+      "in": "path",
+      "type": "number",
+      "name": "BookId",
+      "required": true
+    },
+    {
+      "in": "body",
+      "type": "object",
+      "name": "JsonPatch",
+      "required": true
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Returns the requested book from the database with updated info",
+      "schema": {
+        "$ref": "#/definitions/BookObject"
+      }
+    },
+    "404": {
+      "description": "This item does not exist",
+      "schema": {
+        "type": "string",
+        "$ref": "#/definitions/404Error"
+      }
+    }
+  }
+},
+"delete": {
+  "summary": "Delete a single book from the database",
+"tags": [
+  "Books"
+],
+"parameters": [
+  {
+    "in": "path",
+    "type": "number",
+    "name": "BookId",
+    "required": true
+  }
+],
+"responses": {
+  "204": {
+    "description": "Deletes the requested book from the database",
+    "schema": {
+      "$ref": "#/definitions/Deleted"
+    }
+  },
+  "404": {
+    "description": "This item does not exist",
+    "schema": {
+      "type": "string",
+      "$ref": "#/definitions/404Error"
+    }
+  }
+}
+}
+},
+"/authors": {
+  "post": {
+    "tags": [
+        "Authors"
+    ],
+    "summary": "Creates a new author in the database",
+    "parameters": [
+      {
+        "name": "PostAuthorRequest",
+        "in": "body",
+        "description": "Post an author to the database",
+        "schema": {
+          "type": "object",
+          "required": [
+            "author"
+          ],
+          "properties": {
+            "author": {
+              "type": "string"
+            }
+            }
+          }
+        }
+    ],
+    "responses": {
+      "201": {
+        "description": "Author successfully created",
+        "schema": {
+          "type": "object",
+          "$ref": "#/definitions/AuthorObject"
+        }
+      },
+      "400": {
+        "description": "Not all required fields have been included",
+        "schema": {
+          "type": "string",
+          "$ref": "#/definitions/400Error"
+        }
+      },
+      "409": {
+        "description": "Author already exists in database",
+        "schema": {
+          "type": "string",
+          "$ref": "#/definitions/AuthorError"
+        }
+      }
+    },
+    "produces": [
+      "application/json"
+    ]
+  },
+  "get": {
+      "tags": [
+          "Authors"
+      ],
+      "summary": "Reads all the authors in the database",
+      "parameters": [],
+      "responses": {
+        "200": {
+          "description": "Returns an array of authors from the database",
+          "schema": {
+            "$ref": "#/definitions/AuthorArray"
+          }
+        }
+      },
+      "produces": [
+        "application/json"
+      ]
+    }
+},
+"/authors/{AuthorId}": {
+  "get": {
+      "summary": "Read a single author from the database, and its associated books (if they have been assigned)",
+    "tags": [
+      "Authors"
+    ],
+    "parameters": [
+      {
+        "in": "path",
+        "type": "number",
+        "name": "AuthorId",
+        "required": true
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Returns the requested author from the database",
+        "schema": {
+          "$ref": "#/definitions/AuthorObject"
+        }
+      },
+      "404": {
+        "description": "This item does not exist",
+        "schema": {
+          "type": "string",
+          "$ref": "#/definitions/404Error"
+        }
+      }
+    }
+  },
+  "patch": {
+    "summary": "Update a single author's name",
+  "tags": [
+    "Authors"
+  ],
+  "parameters": [
+    {
+      "in": "path",
+      "type": "number",
+      "name": "AuthorId",
+      "required": true
+    },
+    {
+      "in": "body",
+      "type": "object",
+      "name": "JsonPatch",
+      "required": true
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Returns the requested author from the database with updated info",
+      "schema": {
+        "$ref": "#/definitions/BookObject"
+      }
+    },
+    "404": {
+      "description": "This item does not exist",
+      "schema": {
+        "type": "string",
+        "$ref": "#/definitions/404Error"
+      }
+    }
+  }
+},
+"delete": {
+  "summary": "Delete a single author from the database",
+"tags": [
+  "Authors"
+],
+"parameters": [
+  {
+    "in": "path",
+    "type": "number",
+    "name": "AuthorId",
+    "required": true
+  }
+],
+"responses": {
+  "204": {
+    "description": "Deletes the requested author from the database",
+    "schema": {
+      "$ref": "#/definitions/Deleted"
+    }
+  },
+  "404": {
+    "description": "This item does not exist",
+    "schema": {
+      "type": "string",
+      "$ref": "#/definitions/404Error"
+    }
+  }
+}
+}
+},
+"/genres": {
+  "post": {
+    "tags": [
+        "Genres"
+    ],
+    "summary": "Creates a new genre in the database",
+    "parameters": [
+      {
+        "name": "PostGenreRequest",
+        "in": "body",
+        "description": "Post a genre to the database",
+        "schema": {
+          "type": "object",
+          "required": [
+            "genre"
+          ],
+          "properties": {
+            "genre": {
+              "type": "string"
+            }
+            }
+          }
+        }
+    ],
+    "responses": {
+      "201": {
+        "description": "Genre successfully created",
+        "schema": {
+          "type": "object",
+          "$ref": "#/definitions/GenreObject"
+        }
+      },
+      "400": {
+        "description": "Not all required fields have been included",
+        "schema": {
+          "type": "string",
+          "$ref": "#/definitions/400Error"
+        }
+      },
+      "409": {
+        "description": "Genre already exists in database",
+        "schema": {
+          "type": "string",
+          "$ref": "#/definitions/GenreError"
+        }
+      }
+    },
+    "produces": [
+      "application/json"
+    ]
+  },
+  "get": {
+      "tags": [
+          "Genres"
+      ],
+      "summary": "Reads all the gnres in the database",
+      "parameters": [],
+      "responses": {
+        "200": {
+          "description": "Returns an array of genres from the database",
+          "schema": {
+            "$ref": "#/definitions/GenreArray"
+          }
+        }
+      },
+      "produces": [
+        "application/json"
+      ]
+    }
+},
+"/genres/{GenreId}": {
+  "get": {
+      "summary": "Read a single genre from the database, and its associated books (if they have been assigned)",
+    "tags": [
+      "Genres"
+    ],
+    "parameters": [
+      {
+        "in": "path",
+        "type": "number",
+        "name": "GenreId",
+        "required": true
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Returns the requested genre from the database",
+        "schema": {
+          "$ref": "#/definitions/GenreObject"
+        }
+      },
+      "404": {
+        "description": "This item does not exist",
+        "schema": {
+          "type": "string",
+          "$ref": "#/definitions/404Error"
+        }
+      }
+    }
+  },
+  "patch": {
+    "summary": "Update a single genre's name",
+  "tags": [
+    "Genres"
+  ],
+  "parameters": [
+    {
+      "in": "path",
+      "type": "number",
+      "name": "GenreId",
+      "required": true
+    },
+    {
+      "in": "body",
+      "type": "object",
+      "name": "JsonPatch",
+      "required": true
+    }
+  ],
+  "responses": {
+    "201": {
+      "description": "Returns the requested genre from the database with updated info",
+      "schema": {
+        "$ref": "#/definitions/BookObject"
+      }
+    },
+    "404": {
+      "description": "This item does not exist",
+      "schema": {
+        "type": "string",
+        "$ref": "#/definitions/404Error"
+      }
+    }
+  }
+},
+"delete": {
+  "summary": "Delete a single genre from the database",
+"tags": [
+  "Genres"
+],
+"parameters": [
+  {
+    "in": "path",
+    "type": "number",
+    "name": "GenreId",
+    "required": true
+  }
+],
+"responses": {
+  "204": {
+    "description": "Deletes the requested genre from the database",
+    "schema": {
+      "$ref": "#/definitions/Deleted"
+    }
+  },
+  "404": {
+    "description": "This item does not exist",
+    "schema": {
+      "type": "string",
+      "$ref": "#/definitions/404Error"
+    }
+  }
+}
+}
+}    
+  },
+  "definitions": {
+    "ReaderObject": {
+      "required": [
+        "id",
+        "name",
+        "email"
+      ],
+      "properties": {
+        "id":{
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "BookObject": {
+      "required": [
+        "id",
+        "title",
+        "ISBN"
+      ],
+      "properties": {
+        "id":{
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "ISBN": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "AuthorId": {
+          "type": "integer"
+        },
+        "GenreId": {
+          "type": "integer"
+        },
+        "ReaderId": {
+          "type": "integer"
+        }
+      }
+    },
+    "AuthorObject": {
+      "required": [
+        "id",
+        "author"
+      ],
+      "properties": {
+        "id":{
+          "type": "integer"
+        },
+        "author": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "Books": {
+          "type": "object"
+        }
+      }
+    },
+    "GenreObject": {
+      "required": [
+        "id",
+        "genre"
+      ],
+      "properties": {
+        "id":{
+          "type": "integer"
+        },
+        "genre": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "Books": {
+          "type": "object"
+        }
+      }
+    },
+    "ReaderArray": {
+        "properties": {
+          "readers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ReaderObject"
+            }
+          }
+        }
+      },
+      "BookArray": {
+        "properties": {
+          "books": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/BookObject"
+            }
+          }
+        }
+      },
+      "AuthorArray": {
+        "properties": {
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/AuthorObject"
+            }
+          }
+        }
+      },
+      "GenreArray": {
+        "properties": {
+          "genres": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/GenreObject"
+            }
+          }
+        }
+      },
+      "Deleted": {
+        "properties": {
+          "": {"type": "object",
+            "items": {}
+          }
+          }
+        },
+      "EmailError": {
+        "properties": {
+          "": {"type": "string",
+            "example": "User with email ____ already exists."
+          }
+          }
+        },
+      "PasswordError": {
+        "properties": {
+          "": {"type": "string",
+            "example": "Password must be between 8 and 16 characters in length."
+          }
+          }
+        },
+      "404Error": {
+        "properties": {
+          "": {"type": "string",
+            "example": "The reader/book/author/genre could not be found."
+          }
+          }
+        },
+      "400Error": {
+        "properties": {
+          "": {"type": "string",
+            "example": "Please ensure all fields are completed."
+          }
+          }
+        },
+        "BookError": {
+          "properties": {
+            "": {"type": "string",
+              "example": "The book ____ is already in this library."
+            }
+            }
+          },
+          "AuthorError": {
+            "properties": {
+              "": {"type": "string",
+                "example": "The author ____ already exists."
+              }
+              }
+            },
+            "GenreError": {
+              "properties": {
+                "": {"type": "string",
+                  "example": "The genre ____ already exists."
+                }
+                }
+              }
+  }
+}
