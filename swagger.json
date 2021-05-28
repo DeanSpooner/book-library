@@ -615,7 +615,7 @@
       "tags": [
           "Genres"
       ],
-      "summary": "Reads all the gnres in the database",
+      "summary": "Reads all the genres in the database",
       "parameters": [],
       "responses": {
         "200": {
