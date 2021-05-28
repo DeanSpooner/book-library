@@ -47,7 +47,7 @@ PORT=5000
 | [/readers/\*](#update-existing-reader-by-id) | `PATCH`        | `UPDATE` | Updates the reader with the matching \* ID.                                              |
 | [/readers/\*](#delete-reader-by-id)          | `DELETE`       | `DELETE` | Deletes the reader with the matching \* ID.                                              |
 | [/books](#list-all-books)                    | `GET`          | `READ`   | Generate a list of all books in the database's `Books` table.                            |
-| [/books](#create-new-books)                  | `POST`         | `CREATE` | Adds a book to the table in the database.                                                |
+| [/books](#create-new-book)                   | `POST`         | `CREATE` | Adds a book to the table in the database.                                                |
 | [/books/\*](#get-book-by-id)                 | `GET`          | `READ`   | Fetches the book from the database's `Books` table with the same \* ID (an integer).     |
 | [/books/\*](#update-existing-book-by-id)     | `PATCH`        | `UPDATE` | Updates the book with the matching \* ID.                                                |
 | [/books/\*](#delete-book-by-id)              | `DELETE`       | `DELETE` | Deletes the book with the matching \* ID.                                                |
@@ -481,7 +481,7 @@ PORT=5000
 
 ---
 
-### Delete Reader by ID
+### Delete Author by ID
 
 `DELETE` `/readers/{ ReaderId }`
 
@@ -603,9 +603,9 @@ PORT=5000
 
 ---
 
-### Delete Reader by ID
+### Delete Genre by ID
 
-`DELETE` `/readers/{ ReaderId }`
+`DELETE` `/genres/{ GenreId }`
 
 #### Response Body
 
