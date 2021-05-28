@@ -3,7 +3,7 @@
     "info": {
       "version": "1.0.0",
       "title": "Dean's Book Library",
-      "description": "A web app for keeping a record of readers, books, authors and genres in an online library system.",
+      "description": "A web app for keeping a record of readers, books, authors and genres in an online library system. Original Github source: https://github.com/DeanSpooner/book-library",
       "license": {
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT"
